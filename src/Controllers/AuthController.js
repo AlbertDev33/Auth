@@ -1,5 +1,14 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+const authConfig = require('../config/auth.json')
+
+function generateToken(params = {}) {
+    return jwt.sign(params, authConfig.secret, {
+        expiresIn: 86400,
+    });
+}
 
 module.exports = {
     async index(req, res) {
@@ -18,7 +27,10 @@ module.exports = {
 
             user.password = undefined;
 
-            return res.send({ user });
+            return res.send({ 
+                user,
+                token: generateToken({ id: user.id }),
+            });
 
         } catch (err) {
             if(await User.findOne({ email })) {
@@ -28,5 +40,32 @@ module.exports = {
                 return res.status(400).send({ error: 'Registration failed' });
             }
         }
+    },
+
+    async auth(req, res) {
+        const { email, password } = req.body;
+
+        const user = await User.findOne(
+            { where: { email } },
+        );
+
+        if(!user) {
+            return res.status(400).send({ error: 'User not found' });
+        }
+
+        if(!await bcrypt.compare(password, user.password)) {
+            return res.status(400).send({ error: 'Invalid password' });
+        }
+
+        user.password = undefined;
+
+        const token = jwt.sign({ id: user.id }, authConfig.secret, {
+            expiresIn: 86400,
+        })
+
+        return res.send({ 
+            user, 
+            token: generateToken({ id: user.id }),
+        });
     }
 }
