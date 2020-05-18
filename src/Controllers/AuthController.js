@@ -106,7 +106,7 @@ module.exports = {
                 where: { id: user.id }
             });
 
-            mailer.sendMail({
+            await mailer.sendMail({
                 from: 'rocha@migrar.cloud',
                 to: email,
                 subject: 'Recovery Password',
@@ -123,7 +123,44 @@ module.exports = {
             return res.status(200).send({ ok: 'E-mail enviado com sucesso!' });
             
         } catch (error) {
-            res.status(401).send({ Error: 'Erro ao enviar o e-mail de recuperação de senha!' })
+            res.status(401).send({ error: 'Erro ao enviar o e-mail de recuperação de senha!' })
         }
+    },
+
+    async reset(req, res) {
+        const { email, password, token } = req.body
+
+        const user = await User.findOne({ where: { email } });
+
+        const hash = await bcrypt.hash(password, 12);
+
+        if (!user) {
+            return res.status(400).send({ error: 'User not found' });
+        }
+
+            if (token !== user.passwordresettoken) {
+                return res.status(400).send({ error: 'Token invalid' });
+            }
+
+            const now = new Date();
+
+            if (now > user.passwordresetexpires) {
+                return res.status(400).send({ error: 'Token expired' });
+            }
+
+            // user.password = password;
+
+            await User.update(
+                {
+                    password: hash,
+                },
+                {
+                    where: { id: user.id },
+                }
+            )
+
+            
+            
+            res.send();
     }
 }

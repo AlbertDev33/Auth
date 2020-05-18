@@ -10,6 +10,7 @@ routes.get('/users', authMiddleware, AuthController.index);
 routes.post('/register', AuthController.store);
 routes.get('/register/auth', AuthController.auth);
 routes.post('/recovery', AuthController.recovery);
+routes.post('/reset', AuthController.reset);
 
 routes.get('/projects', authMiddleware, ProjectController.index);
 
