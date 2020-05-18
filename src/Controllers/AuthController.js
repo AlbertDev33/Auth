@@ -2,6 +2,7 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
+const mailer = require('../modules/mailer');
 
 const authConfig = require('../config/auth.json')
 
@@ -79,7 +80,9 @@ module.exports = {
     async recovery(req, res) {
         const { email } = req.body;
 
-        const user = await User.findOne({ where: { email } });
+        try {
+
+            const user = await User.findOne({ where: { email } });
 
         if (!user) {
             return res.status(400).send({ error: 'User not found' });
@@ -103,6 +106,24 @@ module.exports = {
                 where: { id: user.id }
             });
 
-            return res.json({ ok: 'ok' });
+            mailer.sendMail({
+                from: 'rocha@migrar.cloud',
+                to: email,
+                subject: 'Recovery Password',
+                template: 'auth/recoveryPassword',
+                context: { token },
+            }, (err) => {
+                if (err){
+                    return res.status(400).send({ error: 'Não foi possível enviar o email de recuperação, por favor, tente novamente!' });
+                }
+
+                res.send('Email Enviado!')
+            });
+
+            return res.status(200).send({ ok: 'E-mail enviado com sucesso!' });
+            
+        } catch (error) {
+            res.status(401).send({ Error: 'Erro ao enviar o e-mail de recuperação de senha!' })
+        }
     }
 }
