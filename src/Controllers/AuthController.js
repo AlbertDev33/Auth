@@ -159,6 +159,6 @@ module.exports = {
 
             
             
-            res.send();
+            res.status(200).send('Password atualizado!');
     }
 }

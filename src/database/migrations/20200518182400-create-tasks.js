@@ -9,6 +9,11 @@ module.exports = {
           autoIncrement: true,
           allowNull: false,
         },
+        project_id: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references: { model: 'projects', key: 'id' },
+        },
         title: {
           type: Sequelize.STRING,
           allowNull: false,
@@ -16,11 +21,6 @@ module.exports = {
         description: {
           type: Sequelize.STRING,
           allowNull: false, 
-        },
-        project_id: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-          references: { model: 'projects', key: 'id' },
         },
         completed: {
             type: Sequelize.BOOLEAN,

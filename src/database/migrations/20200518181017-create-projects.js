@@ -9,6 +9,13 @@ module.exports = {
           autoIncrement: true,
           allowNull: false,
         },
+        user_id: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references: { model: 'users', key: 'id' },
+          onUpdate: 'CASCADE',
+          onDelete: 'SET NULL',
+        },
         title: {
           type: Sequelize.STRING,
           allowNull: false,
@@ -16,12 +23,6 @@ module.exports = {
         description: {
           type: Sequelize.STRING,
           allowNull: false, 
-        },
-        user_id: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-          references: { model: 'users', key: 'id' },
-          onUpdate: 'CASCADE',
         },
         created_at: {
           type: Sequelize.DATE,

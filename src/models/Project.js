@@ -6,8 +6,13 @@ class Project extends Model {
             title: DataTypes.STRING,
             description: DataTypes.STRING,
         }, {
-            sequelize
+            sequelize,
+            tableName: 'projects',
         })
+    }
+
+    static associate(models) {
+        this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
     }
 }
 
