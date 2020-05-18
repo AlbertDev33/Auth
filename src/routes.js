@@ -6,9 +6,10 @@ const ProjectController = require('./Controllers/ProjectController');
 
 const routes = express.Router();
 
-routes.get('/users', AuthController.index);
+routes.get('/users', authMiddleware, AuthController.index);
 routes.post('/register', AuthController.store);
-routes.post('/register/auth', AuthController.auth);
+routes.get('/register/auth', AuthController.auth);
+// routes.post('/recovery', AuthController.recovery);
 
 routes.get('/projects', authMiddleware, ProjectController.index);
 

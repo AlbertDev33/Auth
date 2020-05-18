@@ -24,6 +24,16 @@ module.exports = {
           allowNull: false,
           select: false,
         },
+        passwordresettoken: {
+          type: Sequelize.STRING,
+          defalValue: 'data',
+          allowNull: true,
+        },
+        passwordresetexpires: {
+          type: Sequelize.STRING,
+          defalValue: 'data',
+          allowNull: true,
+        },
         created_at: {
           type: Sequelize.DATE,
           allowNull: false,

@@ -6,6 +6,8 @@ class User extends Model {
             name: DataTypes.STRING,
             email: DataTypes.STRING,
             password: DataTypes.STRING,
+            passwordresettoken: DataTypes.STRING,
+            passwordresetexpires: DataTypes.STRING,
         }, {
             sequelize
         })
