@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
 const authConfig = require('../config/auth.json')
 
@@ -73,5 +74,35 @@ module.exports = {
             email: user.email, 
             token: generateToken({ id: user.id }),
         });
+    },
+
+    async recovery(req, res) {
+        const { email } = req.body;
+
+        const user = await User.findOne({ where: { email } });
+
+        if (!user) {
+            return res.status(400).send({ error: 'User not found' });
+        }
+
+            const token = crypto.randomBytes(20).toString('hex');
+
+            const now = new Date();
+            now.setHours(now.getHours() + 1);
+
+            const passwordresettoken = token;
+            const passwordresetexpires = String(now);
+
+            await User.update (
+            {
+                passwordresettoken,
+                passwordresetexpires
+
+            },
+            {
+                where: { id: user.id }
+            });
+
+            return res.json({ ok: 'ok' });
     }
 }
