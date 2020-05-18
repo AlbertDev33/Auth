@@ -148,8 +148,6 @@ module.exports = {
                 return res.status(400).send({ error: 'Token expired' });
             }
 
-            // user.password = password;
-
             await User.update(
                 {
                     password: hash,
