@@ -16,11 +16,21 @@ Esse projeto integra o Node.js à uma instância RDS da AWS. O BD utilizado na i
 
 A API está utilizando JWT para autenticar os usuários. Foram criadas rotas que necessitam que o usuário esteja logado para serem acessadas.
 
+![](https://github.com/AlbertDev33/Autenticacao-Com-JWT/blob/master/img/JWT.PNG)
+
 Os dados para login estão sendo requisitados através de Basic Authentication para melhorar a segurança no tráfego das informações dos usuários.
+
+![](https://github.com/AlbertDev33/Autenticacao-Com-JWT/blob/master/img/Login.PNG)
+![](https://github.com/AlbertDev33/Autenticacao-Com-JWT/blob/master/img/CodigoLogin.PNG)
 
 As requisições de presquisa retornam apenas as informações necessárias, sem o retorno de informações sensíveis, como o password do usuário ou algum token.
 
+![](https://github.com/AlbertDev33/Autenticacao-Com-JWT/blob/master/img/Pesquisa.PNG)
+![](https://github.com/AlbertDev33/Autenticacao-Com-JWT/blob/master/img/CodigoPesquisa.PNG)
+
 O usuário pode resetar a senha recebendo um e-mail com um token, que deverá ser informado no momento do reset do password. Esse token tem a expiração de 1 hora. Foi utilizado o Nodemailer para o envio dos e-mail's.
+
+![](https://github.com/AlbertDev33/Autenticacao-Com-JWT/blob/master/img/Reset.PNG)
 
 ## Recursos utilizados
 
