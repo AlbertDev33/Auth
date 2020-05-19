@@ -138,15 +138,15 @@ module.exports = {
             return res.status(400).send({ error: 'User not found' });
         }
 
-            if (token !== user.passwordresettoken) {
-                return res.status(400).send({ error: 'Token invalid' });
-            }
+        if (token !== user.passwordresettoken) {
+            return res.status(400).send({ error: 'Token invalid' });
+        }
 
             const now = String(new Date());
 
-            if (now > user.passwordresetexpires) {
-                return res.status(400).send({ error: 'Token expired' });
-            }
+        if (now > user.passwordresetexpires) {
+            return res.status(400).send({ error: 'Token expired' });
+        }
 
             await User.update(
                 {
@@ -155,9 +155,7 @@ module.exports = {
                 {
                     where: { id: user.id },
                 }
-            )
-
-            
+            )            
             
             res.status(200).send('Password atualizado!');
     }
