@@ -7,23 +7,36 @@ module.exports = {
         const user_id = req.userId;
 
         const user = await User.findByPk(user_id, {
-            include: { association: 'projects' }
+            include: { association: 'projects', attributes: ['id', 'title', 'description'] },
+            attributes: ['id', 'name', 'email']
         });
 
-        user.password = undefined;
+        if (!user) {
+            return res.status(400).json({ error: 'User not found' });
+        }
 
         return res.json(user);
     },
 
     async indexAll(req, res) {
 
-        
-        const project = await Project.findAll(
-            {
-                include: { association: 'user' },
-            });
+        const user_id = req.userId;
+        try {
 
-        return res.json(project);
+            const project = await Project.findAll(
+                {
+                    include: { association: 'user', attributes: ['id', 'name', 'email'] },
+                    attributes: ['id', 'title', 'description'],
+                });
+
+                if (!user_id) {
+                    return res.status(400).json({ error: 'User not found' });
+                }
+    
+            return res.json(project);
+        } catch (error) {
+            res.status(400).json({ error: 'User not found' })
+        }
 
     },
 
