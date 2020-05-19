@@ -12,6 +12,8 @@ routes.get('/register/auth', AuthController.auth);
 routes.post('/recovery', AuthController.recovery);
 routes.post('/reset', AuthController.reset);
 
-routes.post('/users/:user_id/projects', authMiddleware, ProjectController.store);
+routes.get('/users/projects', authMiddleware, ProjectController.indexAll);
+routes.get('/users/user/projects', authMiddleware, ProjectController.index);
+routes.post('/users/create/projects', authMiddleware, ProjectController.store);
 
 module.exports = routes;

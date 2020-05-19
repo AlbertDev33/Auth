@@ -142,7 +142,7 @@ module.exports = {
                 return res.status(400).send({ error: 'Token invalid' });
             }
 
-            const now = new Date();
+            const now = String(new Date());
 
             if (now > user.passwordresetexpires) {
                 return res.status(400).send({ error: 'Token expired' });
